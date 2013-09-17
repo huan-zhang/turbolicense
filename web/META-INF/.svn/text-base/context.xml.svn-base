@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    NOTE: With Tomcat 5.0 using multiple virtual hosts, I wasn't able
+    to deploy this file inside META-INF and get Tomcat to recognize
+    it. In this case, copy the context info into
+    CATALINA_HOME/conf/server.xml
+-->
+<Context docBase="turbo_license" path="turbo_license.war" 
+	 displayName="BCI Website" 
+	 workDir="work/Catalina/localhost/_"
+	 reloadable="true">
+
+  <Manager className="org.apache.catalina.session.PersistentManager" >
+
+    <!-- Use a file store for sessions.
+      <Store className="org.apache.catalina.session.FileStore"
+	   directory="/var/tmp/tomcat-sessions"/>
+			-->
+
+    <!-- JDBC store for sessions -->
+    <!-- 
+    <Store 
+       className="org.apache.catalina.session.JDBCStore"
+       connectionURL="@db.sessions.url@"
+       connectionName="@db.sessions.user@"
+       connectionPassword="@db.sessions.pass@"
+       driverName="com.mysql.jdbc.Driver"
+       sessionTable="sessions"
+       sessionIdCol="session_key"
+       sessionDataCol="session_data"
+       sessionAppCol="application"
+       sessionLastAccessedCol="last_accessed"
+       sessionMaxInactiveCol="max_inactive"
+       sessionValidCol="is_valid"  /> -->
+  </Manager>  
+</Context>

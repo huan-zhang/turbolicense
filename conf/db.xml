@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DBs>
+
+<DB id="license" 
+    data_source_class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource" 
+    url="@db.license.url@" 
+    user="@db.license.user@"
+    pass="@db.license.pass@" />
+
+	<!-- 
+	<DB id="drupal" 
+    	data_source_class="org.postgresql.jdbc3.Jdbc3PoolingDataSource" 
+	    server_name="@db.pg_drupal.server_name@"
+    	db_name="@db.pg_drupal.db_name@"
+    	user="@db.pg_drupal.user@" 
+    	pass="@db.pg_drupal.pass@" />
+ -->
+</DBs>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

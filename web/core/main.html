@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Main Page</title>
+	<meta id="page_info" product_count="0"/>
+	<link type="text/css" href="@root@/css/ui-lightness/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="@root@/js/jquery-1.9.0.js" xml:space="preserve"> 
+	</script>
+	<script type="text/javascript" src="@root@/js/jquery-ui-1.10.0.custom.min.js">
+	</script>
+	<script type="text/javascript" src="@root@/js/main.js" xml:space="preserve"> 
+	</script>
+	<link rel="stylesheet" href="/resources/demos/style.css" />
+</head>
+<Body>
+	<h1>Main Page</h1>
+	<!-- Tabs -->
+	<div id="tabs">
+		<ul>
+			<li><a href="#LicenseTab">Licenses</a></li>
+			<li><a href="#VendorTab">Vendor Information</a></li>
+			<li><a href="#ProductTab">Products</a></li>
+			<li><a href="#CustomerTab">Customers</a></li>
+		</ul>
+		<div id="LicenseTab" license_count="0">
+			<div id="AddNewLicenseRow">
+				<h3>Add New License</h3>
+				<div id="AddNewLicenseCell">
+					<div>
+						Name:<input id="NewLicenseName" name="NewLicenseStartName" value="" />
+					</div>
+					<div>
+						Start Date:<input id="NewLicenseStartDate" name="NewLicenseStartDate" value="" />
+					</div>
+					<div>
+						Expire Date:<input id="NewLicenseExpireDate" name="NewLicenseExpireDate" value="" />
+					</div>
+					<div>
+						Max concurrent number:<input id="NewLicenseMaxNumber" name="NewLicenseMaxNumber" value="" />
+					</div>
+					<div>
+						Attribute 1:<input id="NewLicenseAttr1" name="NewLicenseAttr1" value="" />
+					</div>
+					<div>
+						Attribute 2:<input id="NewLicenseAttr2" name="NewLicenseAttr2" value="" />
+					</div>
+					<div>
+						Attribute 3:<input id="NewLicenseAttr3" name="NewLicenseAttr3" value="" />
+					</div>
+					<div>
+						Attribute 4:<input id="NewLicenseAttr4" name="NewLicenseAttr4" value="" />
+					</div>
+					<div>
+						Attribute 5:<input id="NewLicenseAttr5" name="NewLicenseAttr5" value="" />
+					</div>
+					<div> 
+						<input type="button" id="SubmitNewLicenseBtn" name="SubmitNewLicenseBtn" value="Add New License" onclick="$().submitNewLicense();"/>
+					</div>					
+				</div>
+			</div>
+			<div id="LicenseRow" style="display:none">
+				<h3 id="LicenseRowTitle">TL0000000000000000 Start Date: 2013-01-01 Expire Date: 2013-12-31</h3>
+				<div id="LicenseRowCell">
+					<div id="LicenseRowCellLeft" style="display: inline; float: left;">
+						<div>
+							Name:<input id="LicenseName" name="LicenseName" value="" />
+						</div>
+						<div>
+							Start Date:<input id="LicenseStartDate" name="LicenseStartDate" value="" />
+						</div>
+						<div>
+							Expire Date:<input id="LicenseExpireDate" name="LicenseExpireDate" value="" />
+						</div>
+						<div>
+							Max concurrent number:<input id="LicenseMaxNumber" name="LicenseMaxNumber" value="" />
+						</div>
+						<div>
+							Attribute 1:<input id="LicenseAttr1" name="LicenseAttr1" value="" />
+						</div>
+						<div>
+							Attribute 2:<input id="LicenseAttr2" name="LicenseAttr2" value="" />
+						</div>
+						<div>
+							Attribute 3:<input id="LicenseAttr3" name="LicenseAttr3" value="" />
+						</div>
+						<div>
+							Attribute 4:<input id="LicenseAttr4" name="LicenseAttr4" value="" />
+						</div>
+						<div>
+							Attribute 5:<input id="LicenseAttr5" name="LicenseAttr5" value="" />
+						</div>
+						<div> 
+							<input type="button" id="EditLicenseBtn" name="EditLicenseBtn" value="Edit License" onclick="$().updateLicense(count);"/>
+						</div>	
+					</div>	
+					<div id="LicenseRowCellRight" style="display: inline; float: left;">
+						<div>
+							<a id="LicensePublicKey" href="#">Public key file</a>
+						</div>
+						<div>
+							<a id="LicenseEncrypted" href="#">Encrypted license file</a>
+						</div>
+						<div>
+							<input type="button" id="EncryptLicenseBtn" name="EncryptLicenseBtn" value="Encrypt License" onclick="$().encryptLicense(count);"/>
+						</div>
+					</div>			
+				</div>
+			</div>
+		</div>
+		<div id="VendorTab">
+			<form>
+				<div>
+					Vendor ID: <span id="VendorId"></span>
+				</div>
+				<div>
+					Vendor Name: <input id="VendorName" name="VendorName" value=""/>
+				</div>
+				<div>
+					Contact: <input id="V_Contact" name="V_Contact" value=""/>
+				</div>
+				<div>
+					Address1: <input id="V_Address1" name="V_Address1" value=""/>
+				</div>
+				<div>
+					Address2: <input id="V_Address2" name="V_Address2" value=""/>
+				</div>
+				<div>
+					City: <input id="V_City" name="V_City" value=""/>
+				</div>
+				<div>
+					State: <select id="V_State" name="V_State" value="AL">
+					</select>
+					</div>
+					<div>
+						Country: <input id="V_Country" name="V_Country" value="" />
+					</div>
+				<div>
+					 Zip: <input id="V_Zip" name="V_Zip" value=""/>
+				</div>
+				<div>
+					Phone: <input id="V_Phone" name="V_Phone" value=""/>
+				</div>
+				<div>
+					<input type="button" id="SubmitVendorBtn" name="SubmitVendorBtn" value="Submit" onclick="$().submitVendor();"/>
+				</div>
+			</form>
+		</div>
+		<div id="ProductTab">
+			<div id="AddNewProductRow">
+				<h3>Add New Product</h3>
+				<div id="AddNewProductCell">
+					<div>
+						Name: <input id="Product_Name" name="Product_Name" value=""/>
+					</div>
+					<div>
+						Description: <input id="Product_Description" name="Product_Description" value=""/>
+					</div>
+					<div> 
+						<input type="button" id="SubmitNewProductBtn" name="SubmitNewProductBtn" value="Add New Product" onclick="$().submitNewProduct();"/>
+					</div>
+				</div>
+			</div>
+			<div id="ProductRow" product_id="0" feature_count="0">
+				<h3 id="ProductRowTitle">test1</h3>
+				<div>
+					<div id="ProductRowDesc">
+						TestDesc
+					</div>
+					<div id="ProductRowCell">
+						<div id="NewFeatureRow">
+							<div>
+								Feature Name: <input id="FeatureName" name="FeatureName" value="" />
+							</div>
+							<div>
+								Feature Description: <input id="FeatureDesc" name="FeatureDesc" value="" />
+							</div>
+							<div>
+								<input type="button" id="SubmitNewFeatureBtn" name="SubmitNewFeatureBtn" value="Add New Feature" />
+							</div>
+						</div>
+						<table id="FeatureTable">
+							<tr id="FeatureTableHeader">
+								<th>id</th>
+								<th>name</th>
+								<th>description</th>
+							</tr>
+							<tr id="FeatureRow">
+								<td id="FeatureRowId">0</td>
+								<td id="FeatureRowName">TestFeature1</td>
+								<td id="FeatureRowDesc">TestFeature1</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="CustomerTab">
+		</div>
+		
+	</div>
+</Body>
+</html>

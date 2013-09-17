@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Test JSON RPC</title>
+	<script type="text/javascript" src="@root@/js/jquery.min.js" xml:space="preserve"> 
+	</script>
+	<script type="text/javascript" src="@root@/js/testrpc.js" xml:space="preserve"> 
+	</script>
+</head>
+<Body>
+	<h1>Test JSON RPC</h1>
+	<input type="button" name="TestBtn" id="TestBtn" value="Test JSON RPC" onclick="$().testJsonRpc();" />
+</Body>
+</html>

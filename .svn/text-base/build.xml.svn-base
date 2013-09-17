@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<project name="main" default="dist-stage" basedir=".">
+
+  <description>
+    main application
+  </description>
+
+
+	
+  <!-- local web directory for tomcat to serve from -->
+  <property name="local-tomcat" value="/var/lib/tomcat5/webapps" />	
+	
+  <!-- build time properties over-written in dist tasks -->
+<!--  <property name="build" value="live"/>-->
+
+  <!-- java source files -->
+  <property name="src.dir" value="src"/>
+
+  <!-- configuration files that will be classpath resources. -->
+  <property name="conf.dir" value="conf"/>
+
+  <!-- location of source template files and images for the web app -->
+  <property name="web.dir" value="web"/>
+
+  <!-- 3rd party libraries -->
+  <property name="global.lib.dir" value="${basedir}/../lib"/>
+
+  <!-- resulting web-app root -->
+  <property name="build.dir" value="build"/>
+
+  <!-- location of distribution packages -->
+  <property name="dist.dir" value="dist"/>
+
+  <!-- location of javadocs -->
+  <property name="javadoc.dir" value="javadoc"/>
+
+
+  <!-- classpath for compilation -->
+  <path id="compile.classpath">
+    <fileset dir="${global.lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement path="${global.lib.dir}"/>
+  </path>
+
+
+  <!-- TARGETS -->
+
+  <target name="clean" description="Removes compiled code and artifacts.">
+    <delete dir="${build.dir}/WEB-INF"/>
+  	<delete dir="${build.dir}/core"/>
+  	<delete dir="${build.dir}/js"/>
+  	<delete dir="${build.dir}/css"/>
+    <delete dir="${dist.dir}"/>
+    <delete dir="${javadoc.dir}"/>
+    <delete dir="${test.dir}"/>
+  </target>
+
+
+  <target name="prep" description="Makes sure the 'build' property is set, generates build directory and moves-in/filters configuration files.">
+    <echo message="Building with '${build}' properties."/>
+    <filter filtersfile="build-${build}.properties"/>
+    
+  	<!-- Copy configuration files into classpath, filtering for build params. -->
+    <copy todir="${build.dir}/WEB-INF/classes" filtering="true" overwrite="true">
+      <fileset dir="${conf.dir}" includes="**/*" />
+    </copy>
+    
+  	<!-- Copy supporting jars. Only include commercetrack and logging for war. Others are common on server -->
+    <copy todir="${build.dir}/WEB-INF/lib">
+      <fileset dir="${global.lib.dir}" includes="log4j-1.2.14.jar" />
+      <!-- <fileset dir="${local.lib.dir}" includes="**/*.jar" /> -->
+    </copy>
+    
+  	<!-- Copy web templates and assets. -->
+    <copy todir="${build.dir}" filtering="true" overwrite="true">
+      <fileset dir="${web.dir}"/>
+    </copy>
+  	
+    <!-- Copy stylesheet to items dir (temporary hack for crawlable site) -->
+    <!-- <copy todir="${build.dir}/items" file="${web.dir}/StyleHome.css"/> -->
+    <!-- Copy web.xml with filtering -->
+  	<!-- UN_REMM TO PUT WEBXML BACK IN -->
+    <copy file="${web.dir}/WEB-INF/web.xml" todir="${build.dir}/WEB-INF" 
+					filtering="true" overwrite="true"/> 
+  	
+    <!-- Copy context.xml with filtering -->
+    <copy file="${web.dir}/META-INF/context.xml" todir="${build.dir}/META-INF" 
+					filtering="true" overwrite="true"/>
+  </target>
+
+  <target name="compile" description="Compiles the Java source.">
+    <mkdir dir="${build.dir}/WEB-INF/classes"/>
+    <javac srcdir="${src.dir}"
+	   destdir="${build.dir}/WEB-INF/classes"
+	   debug="on"
+	   source="1.5"
+	   target="1.5"
+	   classpathref="compile.classpath"/>
+  </target>
+
+  <target name="dist"  description="Packages built files into an archive for distribution.">
+ 	  
+  	<antcall target="clean">
+ 	  </antcall>
+  	
+ 	  <antcall target="prep">
+ 	    <param name="build" value="${build}"/>
+ 	  </antcall>
+ 	   	
+  	<antcall target="compile">
+ 	 </antcall>
+  	
+	<echo message="NOTE: this is a jar containing templates and class files and config files"/>
+  	
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${dist.dir}/turbo-license.war">
+      <!-- <fileset dir="build" excludes="images/**" /> -->
+      <fileset dir="build" />
+    </jar>	 
+  
+  </target>
+	
+	<!-- DIST TARGETS VARYING BY BUILD PROPERTIES -->
+  
+	<target name="dist-stage"  description="Packages built files into an archive for distribution on local machine">
+		<antcall target="dist">
+   	    <param name="build" value="stage"/>
+   	  </antcall>
+	  <copy file="${dist.dir}/turbo-license.war" todir="${local-tomcat}" filtering="true" overwrite="true"/>
+	 <!--<unjar src="${local-tomcat}/shop.war" dest="${local-tomcat}" />-->
+  </target>
+	
+	<target name="dist-live"  description="Packages built files into an archive for distribution on local machine">
+			<antcall target="dist">
+	   	    <param name="build" value="live"/>
+	   	  </antcall>
+	  </target>
+</project>

@@ -1,0 +1,22 @@
+<html>
+<head>
+	<title>Test Servlet</title>
+	<script type="text/javascript" src="@root@/js/jquery.min.js" xml:space="preserve"> 
+	</script>
+	<script type="text/javascript" src="@root@/js/testservlet.js" xml:space="preserve"> 
+	</script>
+</head>
+<Body>
+	Welcome to Test Servlet
+	<table>
+		<th>
+			<td>ID</td>
+			<td>Text</td>
+		</th>
+		<tr id="TestRow">
+			<td id="TestRow_Id">0</td>
+			<td id="TestRow_Text">Test0</td>
+		</tr>
+	</table>
+</Body>
+</html>

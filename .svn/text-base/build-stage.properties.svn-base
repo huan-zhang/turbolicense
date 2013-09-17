@@ -1,0 +1,17 @@
+# Build-time 'stage' properties for BCI
+
+# Write path here because tomcat and linux are too stupid 
+# for context.getRealPath() to be accurate in symlink environment
+path=/var/lib/tomcat5/webapps/turbo-license
+root=/turbo-license
+download.path=/download
+server=http://localhost:8080
+
+# LOGGING
+log4j.rootLogger.level=INFO
+app.log.filepath=/var/tmp/tomcat5/license-error.log
+
+# database info
+db.license.user=jrg
+db.license.pass=99999999
+db.license.url=jdbc:mysql://localhost/jrg

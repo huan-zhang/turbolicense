@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Sign Up</title>
+	<script type="text/javascript" src="@root@/js/jquery.min.js" xml:space="preserve"> 
+	</script>
+	<script type="text/javascript" src="@root@/js/signup.js" xml:space="preserve"> 
+	</script>
+</head>
+<Body>
+	<h1>Sign Up</h1>
+	<div id="SignupBlock">
+		<div>
+			<span>Username: </span>
+			<span><input id="username" name="username" value="" size="15"/></span>
+		</div>
+		<div>
+			<span>Password: </span>
+			<span><input id="password1" name="password1" type="password" value="" size="15"/></span>
+			<br />
+			<span>Repeat: </span>
+			<span><input id="password2" name="password2" type="password" value="" size="15"/></span>
+		</div>
+		<div>
+			<span>Email: </span>
+			<span><input id="email" name="email" value="" size="15"/></span>
+		</div>
+		<div>
+			<span>First Name: </span>
+			<span><input id="f_name" name="f_name" value="" size="15" /></span>
+		</div>
+		<div>
+			<span>Last Name: </span>
+			<span><input id="l_name" name="l_name" value="" size="15" /></span>
+		</div>
+		<div>
+			<input type="button" name="SubmitBtn" id="SubmitBtn" value="Sign Up" onclick="$().signup();"/>		
+		</div>
+	</div>
+	<div id="MsgBlock">
+		<h2>Congradulations! You've successfully signed up. Please click <a href="Login" >here</a> to Login.</h2>
+	</div>
+</Body>
+</html>

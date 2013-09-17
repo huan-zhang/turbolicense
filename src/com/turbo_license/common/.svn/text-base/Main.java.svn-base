@@ -1,0 +1,141 @@
+package com.turbo_license.common;
+
+
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.jdom.Element;
+
+import com.turbo_license.dom.PageDom;
+import com.turbo_license.utilities.DOMAutoFiller;
+
+public class Main extends MasterServlet {
+
+	
+	
+	/**
+	 * Initializes the servlet.
+	 */
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config, "core/main.html");
+	}
+
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+	 * 
+	 * @param request
+	 *            servlet request
+	 * @param response
+	 *            servlet response
+	 */
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
+
+		/***********************************************************************************************************************************
+		 * Get a copy of the template DOM, fill common areas
+		 **********************************************************************************************************************************/
+		PageDom pageDom = originalDom.getPageDom();
+		HttpSession session = request.getSession(true);
+		String username = (String) session.getAttribute("username");
+		String userId = (String) session.getAttribute("user_id");
+		if (username == null || "".equals(username)) {
+			response.sendRedirect(response.encodeRedirectURL(ctx + "/Login"));
+		}
+		renderVendor(pageDom, userId);
+		renderProduct(pageDom, userId);
+		this.sendToClient(response, pageDom);
+	}
+	
+	private void renderVendor(PageDom pageDom, String userId) {
+		SqlConn con = null;
+		ResultSet rs = null;
+		try {
+			con = ConnFactory.getConnection("license");
+			String sql = "select * from vendor where user_id = '" + userId + "' order by name";
+			rs = con.query(sql);
+			if (rs != null && rs.next()) {
+				pageDom.getNode("VendorId").setText(rs.getString("id"));
+				pageDom.getNode("VendorName").setAttribute("value", rs.getString("name"));
+				pageDom.getNode("V_Contact").setAttribute("value", rs.getString("contact"));
+				pageDom.getNode("V_Address1").setAttribute("value", rs.getString("addr1"));
+				pageDom.getNode("V_Address2").setAttribute("value", rs.getString("addr2"));
+				pageDom.getNode("V_City").setAttribute("value", rs.getString("city"));
+				String curState = rs.getString("state");
+				DOMAutoFiller.fillStates(pageDom, "V_State", curState);
+				pageDom.getNode("V_Zip").setAttribute("value", rs.getString("zip"));
+				pageDom.getNode("V_Country").setAttribute("value", rs.getString("country"));
+				pageDom.getNode("V_Phone").setAttribute("value", rs.getString("phone"));
+				
+			} else {
+				DOMAutoFiller.fillStates(pageDom, "V_State", "AL");
+
+			}
+		} catch (Exception e) { 
+			logger.error(e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+	
+	private void renderProduct(PageDom pageDom, String userId) {
+		SqlConn con = null;
+		ResultSet rs = null;
+		String sql = "";
+		try {
+			con = ConnFactory.getConnection("license");
+			sql = "select * from product where vendor_id = '" + userId + "'";
+			rs = con.query(sql);
+			Element elProductRow = pageDom.getNode("ProductRow");
+			Element elParent = elProductRow.getParentElement();
+			elProductRow.detach();
+			elParent.addContent((Element) elProductRow.clone());
+			int count = 0;
+			String productId = "";
+			while (rs != null && rs.next()) {
+				count ++;
+				productId = rs.getString("id");
+				elProductRow.setAttribute("product_id", productId);
+				elProductRow.setAttribute("line_number", "" + count);
+				pageDom.getNode("ProductRowTitle").setText(rs.getString("name"));
+				pageDom.getNode("ProductRowDesc").setText(rs.getString("description"));
+				pageDom.getNode("ProductRowTitle").setAttribute("id", "ProductRowTitle_" + count);
+				pageDom.getNode("ProductRowDesc").setAttribute("id", "ProductRowDesc_" + count);
+				renderFeature(pageDom, count + "");
+				elProductRow.setAttribute("id", "ProductRow_" + count);
+				
+				elParent.addContent((Element) elProductRow.clone());
+			}
+			pageDom.setNodeAttr("page_info", "product_count", "" + count);
+		} catch (Exception e) {
+			logger.error("Getting products for user " + userId + " failed: " + e.getMessage());
+		} finally {
+			con.close();
+		}
+	}
+	
+	private void renderFeature(PageDom pageDom, String count) {
+		pageDom.getNode("ProductRowCell").setAttribute("id", "ProductRowCell_" + count);
+		pageDom.getNode("NewFeatureRow").setAttribute("id", "NewFeatureRow_" + count);
+		pageDom.getNode("FeatureName").setAttribute("id", "FeatureName_" + count);
+		pageDom.getNode("FeatureName").setAttribute("name", "FeatureName_" + count);
+		pageDom.getNode("FeatureDesc").setAttribute("id", "FeatureDesc_" + count);
+		pageDom.getNode("FeatureDesc").setAttribute("name", "FeatureDesc_" + count);
+		pageDom.getNode("SubmitNewFeatureBtn").setAttribute("id", "SubmitNewFeatureBtn_" + count);
+		pageDom.getNode("SubmitNewFeatureBtn").setAttribute("name", "SubmitNewFeatureBtn_" + count);
+		pageDom.getNode("SubmitNewFeatureBtn").setAttribute("onclick", "$().addNewFeature('" + count + "');");
+		pageDom.getNode("FeatureTable").setAttribute("id", "FeatureTable_" + count);
+		pageDom.getNode("FeatureTableHeader").setAttribute("id", "FeatureTableHeader_" + count);
+		pageDom.getNode("FeatureRow").setAttribute("id", "FeatureRow_" + count);
+		pageDom.getNode("FeatureRowId").setAttribute("id", "FeatureRowId_" + count);
+		pageDom.getNode("FeatureRowName").setAttribute("id", "FeatureRowName_" + count);
+		pageDom.getNode("FeatureRowDesc").setAttribute("id", "FeatureRowDesc_" + count);
+	}
+}
