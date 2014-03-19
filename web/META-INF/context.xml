@@ -5,8 +5,8 @@
     it. In this case, copy the context info into
     CATALINA_HOME/conf/server.xml
 -->
-<Context docBase="turbo_license" path="turbo_license.war" 
-	 displayName="BCI Website" 
+<Context docBase="turbo-license" path="/turbo-license.war" 
+	 displayName="Turbo License Website" 
 	 workDir="work/Catalina/localhost/_"
 	 reloadable="true">
 
